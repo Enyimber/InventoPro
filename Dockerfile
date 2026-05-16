@@ -1,35 +1,27 @@
 # ---------- BUILD ----------
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
 
-RUN apk add --no-cache bash
-
-# Copiar Maven Wrapper
-COPY .mvn .mvn
-COPY mvnw pom.xml ./
-
-# Permisos
-RUN chmod +x mvnw
-
-# Descargar dependencias
-RUN ./mvnw dependency:go-offline
-
-# Copiar código fuente
-COPY src src
+# Copiar todo el proyecto
+COPY . .
 
 # Compilar
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # ---------- RUN ----------
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+# Copiar jar compilado
 COPY --from=build /app/target/*.jar app.jar
 
+# Puerto de Spring Boot
 EXPOSE 8201
 
+# Variables de entorno
 ENV PORT=8201
 
+# Ejecutar aplicación
 ENTRYPOINT ["java","-jar","app.jar"]
