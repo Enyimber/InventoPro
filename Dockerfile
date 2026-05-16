@@ -1,4 +1,4 @@
-# ---------- BUILD ----------
+# ---------- ETAPA 1: COMPILAR ----------
 FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
@@ -6,22 +6,21 @@ WORKDIR /app
 # Copiar todo el proyecto
 COPY . .
 
-# Compilar
+# Compilar proyecto
 RUN mvn clean package -DskipTests
 
-# ---------- RUN ----------
+# ---------- ETAPA 2: EJECUTAR ----------
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copiar jar compilado
+# Copiar JAR generado
 COPY --from=build /app/target/*.jar app.jar
 
-# Puerto de Spring Boot
+# Puerto Spring Boot
 EXPOSE 8201
 
-# Variables de entorno
 ENV PORT=8201
 
-# Ejecutar aplicación
+# Ejecutar app
 ENTRYPOINT ["java","-jar","app.jar"]
