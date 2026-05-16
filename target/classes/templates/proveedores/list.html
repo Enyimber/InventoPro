@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Proveedores', ~{::section})}">
+<section>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2>🏷️ Proveedores</h2>
+      <a th:href="@{/proveedores/nuevo}" class="btn btn-primary">+ Nuevo proveedor</a>
+    </div>
+    <div th:if="${ok}"    class="badge badge-ok"  style="margin-bottom:12px" th:text="${ok}"></div>
+    <div th:if="${error}" class="badge badge-low" style="margin-bottom:12px" th:text="${error}"></div>
+    <table>
+      <thead><tr><th>NIT</th><th>Razón social</th><th>Contacto</th><th>Teléfono</th><th>Email</th><th>Estado</th><th>Acciones</th></tr></thead>
+      <tbody>
+        <tr th:each="p : ${proveedores}">
+          <td th:text="${p.nit}"></td>
+          <td><strong th:text="${p.razonSocial}"></strong></td>
+          <td th:text="${p.contacto}"></td>
+          <td th:text="${p.telefono}"></td>
+          <td th:text="${p.email}"></td>
+          <td>
+            <span class="badge badge-ok"  th:if="${p.activo}">Activo</span>
+            <span class="badge badge-low" th:unless="${p.activo}">Inactivo</span>
+          </td>
+          <td class="actions">
+            <a th:href="@{'/proveedores/' + ${p.id} + '/editar'}" class="btn btn-ghost">Editar</a>
+            <a th:href="@{'/proveedores/' + ${p.id} + '/toggle'}" class="btn btn-ghost"
+               th:text="${p.activo} ? 'Desactivar' : 'Activar'"></a>
+            <a th:href="@{'/proveedores/' + ${p.id} + '/eliminar'}" class="btn btn-danger"
+               onclick="return confirm('¿Eliminar este proveedor?')">Eliminar</a>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(proveedores)}">
+          <td colspan="7" style="text-align:center;color:var(--muted);padding:30px">
+            No hay proveedores registrados.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</th:block>
+</body></html>

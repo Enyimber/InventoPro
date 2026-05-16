@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title th:text="|InventoPro · ${title}|">InventoPro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">IP</div> InventoPro</div>
+      <nav class="nav">
+        <a th:href="@{/dashboard}">📊 Dashboard</a>
+        <a th:href="@{/articulos}">📦 Artículos</a>
+        <a th:href="@{/movimientos}">🔁 Movimientos</a>
+        <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">👥 Usuarios</a>
+        <a th:href="@{/proveedores}" sec:authorize="hasRole('ADMIN')">🏷️ Proveedores</a>
+        <a th:href="@{/swagger-ui.html}" target="_blank">🔌 API Docs</a>
+        <form th:action="@{/logout}" method="post" style="margin-top:30px">
+          <button class="btn btn-ghost" style="width:100%">Cerrar sesión</button>
+        </form>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <h1 th:text="${title}">Página</h1>
+        <div class="user-chip">
+          👤 <span sec:authentication="name">usuario</span>
+          <span class="badge badge-ok"
+                style="margin-left:8px"
+                sec:authentication="principal.authorities"></span>
+        </div>
+      </header>
+      <section th:replace="${content}">contenido</section>
+    </main>
+  </div>
+</body>
+</html>

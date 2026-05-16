@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Dashboard', ~{::section})}">
+<section>
+  <div class="cards">
+    <div class="card"><h3>Total Artículos</h3><div class="value" th:text="${totalArticulos}">0</div></div>
+    <div class="card"><h3>Alertas Stock</h3><div class="value" th:text="${totalAlertas}">0</div></div>
+    <div class="card"><h3>Movimientos hoy</h3><div class="value" th:text="${movimientosHoy}">0</div></div>
+    <div class="card"><h3>Estado</h3><div class="value" style="font-size:22px">🟢 Online</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>⚠️ Artículos bajo stock mínimo</h2>
+    <table>
+      <thead><tr><th>Código</th><th>Nombre</th><th>Stock actual</th><th>Stock mínimo</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr th:each="a : ${articulosBajos}">
+          <td th:text="${a.codigo}"></td>
+          <td th:text="${a.nombre}"></td>
+          <td th:text="${a.stockActual}"></td>
+          <td th:text="${a.stockMinimo}"></td>
+          <td><span class="badge badge-low">Bajo stock</span></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(articulosBajos)}">
+          <td colspan="5" style="text-align:center;color:var(--muted);padding:24px">
+            ✅ Todo el stock está dentro de lo esperado
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</th:block>
+</body></html>
