@@ -19,4 +19,5 @@ public class Movimiento {
     private String motivo;
     private String usuario;
     @Indexed private LocalDateTime fecha;
+    private String estado;       // PENDIENTE / ACEPTADO / RECHAZADO / null (o ACEPTADO para estándar)
 }

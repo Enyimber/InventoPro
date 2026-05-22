@@ -16,6 +16,10 @@ public class Usuario {
     private String password;
     private String nombreCompleto;
     private Set<String> roles;
+    /** Para usuarios con rol PROVEEDOR: id del proveedor que representa. */
+    private String proveedorId;
+    /** Para usuarios con rol SUPERVISOR: área que supervisa. */
+    private String area;
     private boolean activo;
     private LocalDateTime creadoEn;
 }

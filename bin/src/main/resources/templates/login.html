@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Iniciar sesión · InventoPro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="brand" style="margin-bottom:16px">
+        <div class="logo">IP</div> InventoPro
+      </div>
+      <h1>Bienvenido 👋</h1>
+      <p class="sub">Sistema gestor de inventario · InnovaCode S.A.S.</p>
+      <div th:if="${param.error}" class="alert alert-error">Credenciales inválidas</div>
+      <div th:if="${param.logout}" class="alert alert-info">Sesión cerrada correctamente</div>
+      <form th:action="@{/login}" method="post">
+        <div class="field">
+          <label>Usuario</label>
+          <input type="text" name="username" required autofocus placeholder="admin"/>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" name="password" required placeholder="••••••••"/>
+        </div>
+        <button class="btn btn-primary" style="width:100%">Entrar</button>
+      </form>
+      <p style="margin-top:20px;color:var(--muted);font-size:12px;text-align:center">
+        Por defecto: <strong>admin / Admin123*</strong>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -93,3 +93,21 @@ input:focus,select:focus{border-color:var(--primary)}
 .alert-error{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
 .alert-info{background:rgba(34,211,238,.12);color:#67e8f9;border:1px solid rgba(34,211,238,.3)}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== Sprint 2: estilo tipo Snipe-IT ===== */
+.nav-section{
+  font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);
+  margin:18px 8px 6px;font-weight:700;
+}
+.grid-2{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;
+  margin-bottom:18px;
+}
+.role-chip{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  border:1px solid var(--border);border-radius:10px;background:var(--bg);
+  font-weight:600;font-size:13px;cursor:pointer;transition:.2s;
+}
+.role-chip:hover{border-color:var(--primary)}
+.role-chip input{width:auto}
+canvas{max-width:100%}

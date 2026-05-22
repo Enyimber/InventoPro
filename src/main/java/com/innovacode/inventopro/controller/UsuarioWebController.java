@@ -2,6 +2,7 @@ package com.innovacode.inventopro.controller;
 
 import com.innovacode.inventopro.model.Usuario;
 import com.innovacode.inventopro.security.Roles;
+import com.innovacode.inventopro.service.ProveedorService;
 import com.innovacode.inventopro.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 public class UsuarioWebController {
 
     private final UsuarioService service;
+    private final ProveedorService proveedorService;
 
     @GetMapping
     public String listar(Model model) {
@@ -31,6 +33,7 @@ public class UsuarioWebController {
         model.addAttribute("usuario",
             Usuario.builder().roles(new HashSet<>()).activo(true).build());
         model.addAttribute("rolesDisponibles", Roles.TODOS);
+        model.addAttribute("proveedores", proveedorService.listar());
         model.addAttribute("modo", "crear");
         return "usuarios/form";
     }
@@ -54,6 +57,7 @@ public class UsuarioWebController {
     public String editar(@PathVariable String id, Model model) {
         model.addAttribute("usuario", service.obtener(id));
         model.addAttribute("rolesDisponibles", Roles.TODOS);
+        model.addAttribute("proveedores", proveedorService.listar());
         model.addAttribute("modo", "editar");
         return "usuarios/form";
     }

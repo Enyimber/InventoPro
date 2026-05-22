@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Mis entregas', ~{::section})}">
+<section>
+  <div class="actions" style="margin-bottom:16px">
+    <a class="btn btn-primary" th:href="@{/proveedor/entregas/nueva}">➕ Nueva entrega</a>
+  </div>
+  <div th:if="${ok}" class="alert alert-info" th:text="${ok}"></div>
+  <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+  <div class="panel">
+    <h2>🚚 Mis entregas <span th:if="${proveedor}" style="color:var(--muted);font-weight:400;font-size:14px"
+      th:text="|· ${proveedor.razonSocial}|"></span></h2>
+    <table>
+      <thead><tr><th>Fecha</th><th>Artículo</th><th>Cantidad</th><th>Precio U.</th><th>Motivo</th></tr></thead>
+      <tbody>
+        <tr th:each="m : ${entregas}">
+          <td th:text="${#temporals.format(m.fecha,'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${m.articuloId}"></td>
+          <td th:text="${m.cantidad}"></td>
+          <td th:text="${m.precioUnitario}"></td>
+          <td th:text="${m.motivo}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(entregas)}">
+          <td colspan="5" style="text-align:center;color:var(--muted);padding:24px">
+            No hay entregas registradas
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</th:block>
+</body></html>

@@ -46,6 +46,46 @@ public class MovimientoService {
         m.setTipo(tipo);
         m.setUsuario(usuario);
         m.setFecha(LocalDateTime.now());
+        m.setEstado("ACEPTADO");
+        return repo.save(m);
+    }
+
+    /** Registra una entrega de proveedor como PENDIENTE sin modificar el stock. */
+    public Movimiento registrarPendiente(Movimiento m, String usuario) {
+        articuloRepo.findById(m.getArticuloId())
+            .orElseThrow(() -> new IllegalArgumentException("Artículo no encontrado"));
+
+        if (m.getCantidad() <= 0)
+            throw new IllegalArgumentException("La cantidad debe ser mayor a 0");
+
+        m.setTipo("ENTRADA");
+        m.setUsuario(usuario);
+        m.setFecha(LocalDateTime.now());
+        m.setEstado("PENDIENTE");
+        return repo.save(m);
+    }
+
+    /** Procesa una entrega pendiente, aceptándola (actualiza stock y cambia estado a ACEPTADO) o rechazándola (cambia estado a RECHAZADO). */
+    public Movimiento procesarEntrega(String id, boolean aceptar, String usuarioProcesador) {
+        Movimiento m = repo.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Entrega no encontrada"));
+
+        if (!"PENDIENTE".equals(m.getEstado())) {
+            throw new IllegalStateException("El movimiento no está en estado PENDIENTE");
+        }
+
+        if (aceptar) {
+            Articulo a = articuloRepo.findById(m.getArticuloId())
+                .orElseThrow(() -> new IllegalArgumentException("Artículo no encontrado"));
+            a.setStockActual(a.getStockActual() + m.getCantidad());
+            a.setActualizadoEn(LocalDateTime.now());
+            articuloRepo.save(a);
+            m.setEstado("ACEPTADO");
+        } else {
+            m.setEstado("RECHAZADO");
+        }
+        
+        m.setUsuario(usuarioProcesador);
         return repo.save(m);
     }
 }

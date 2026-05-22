@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Dashboard · Supervisor de Área', ~{::section})}">
+<section>
+  <div class="cards">
+    <div class="card"><h3>Total Artículos</h3><div class="value" th:text="${totalArticulos}">0</div></div>
+    <div class="card"><h3>Alertas Stock</h3><div class="value" th:text="${totalAlertas}">0</div></div>
+    <div class="card"><h3>Movimientos hoy</h3><div class="value" th:text="${movimientosHoy}">0</div></div>
+  </div>
+  <div class="panel"><h2>✅ Solicitudes pendientes de aprobación</h2>
+    <p style="color:var(--muted)">No hay solicitudes pendientes en este momento.</p></div>
+  <div th:replace="~{dashboards/_charts :: movChart}"></div>
+  <div th:replace="~{dashboards/_charts :: alertasTabla}"></div>
+</section>
+</th:block>
+</body></html>

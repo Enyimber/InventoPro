@@ -21,25 +21,22 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Bean public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
-    /**
-     * Jerarquía: ADMIN hereda TODOS los demás roles, por lo que puede hacer todo.
-     */
+    /** ADMIN hereda todos los demás roles. */
     @Bean
     public RoleHierarchy roleHierarchy() {
         return RoleHierarchyImpl.fromHierarchy(
               "ROLE_ADMIN > ROLE_GERENTE\n"
-            + "ROLE_GERENTE > ROLE_ALMACENISTA\n"
-            + "ROLE_GERENTE > ROLE_AUDITOR\n"
-            + "ROLE_ALMACENISTA > ROLE_VENDEDOR\n"
+            + "ROLE_GERENTE > ROLE_SUPERVISOR\n"
+            + "ROLE_SUPERVISOR > ROLE_ALMACENISTA\n"
             + "ROLE_ALMACENISTA > ROLE_COMPRADOR\n"
-            + "ROLE_VENDEDOR > ROLE_CONSULTOR\n"
+            + "ROLE_ALMACENISTA > ROLE_VENDEDOR\n"
             + "ROLE_COMPRADOR > ROLE_CONSULTOR\n"
-            + "ROLE_AUDITOR > ROLE_CONSULTOR"
+            + "ROLE_VENDEDOR > ROLE_CONSULTOR\n"
+            + "ROLE_GERENTE > ROLE_AUDITOR\n"
+            + "ROLE_AUDITOR > ROLE_CONSULTOR\n"
+            + "ROLE_ADMIN > ROLE_PROVEEDOR"
         );
     }
 
@@ -76,7 +73,9 @@ public class SecurityConfig {
                                  "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/usuarios/**").hasRole("ADMIN")
                 .requestMatchers("/proveedores/**").hasRole("ADMIN")
-                .requestMatchers("/movimientos/nuevo", "/movimientos").hasRole("CONSULTOR") // jerarquía: todos los superiores acceden
+                .requestMatchers("/proveedor/**").hasAnyRole("ADMIN", "PROVEEDOR")
+                .requestMatchers("/almacen/**").hasAnyRole("ADMIN","ALMACENISTA","SUPERVISOR")
+                .requestMatchers("/movimientos/**").hasRole("CONSULTOR")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
