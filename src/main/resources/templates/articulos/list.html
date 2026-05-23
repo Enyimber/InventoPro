@@ -4,38 +4,41 @@
 <th:block th:replace="~{layout :: layout('Artículos', ~{::section})}">
 <section>
   <div class="panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h2>📦 Catálogo de artículos</h2>
-      <a th:href="@{/articulos/nuevo}" class="btn btn-primary">+ Nuevo artículo</a>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h2><i class="ph-fill ph-package"></i> Catálogo de artículos</h2>
+      <a th:href="@{/articulos/nuevo}" class="btn btn-primary"><i class="ph-bold ph-plus"></i> Nuevo artículo</a>
     </div>
-    <table>
-      <thead>
-        <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Stock</th><th>Mín.</th><th>Precio</th><th>Acciones</th></tr>
-      </thead>
-      <tbody>
-        <tr th:each="a : ${articulos}">
-          <td th:text="${a.codigo}"></td>
-          <td th:text="${a.nombre}"></td>
-          <td th:text="${a.categoria}"></td>
-          <td>
-            <span th:text="${a.stockActual}"></span>
-            <span class="badge badge-low" th:if="${a.stockActual < a.stockMinimo}">Bajo</span>
-            <span class="badge badge-ok"  th:if="${a.stockActual >= a.stockMinimo}">OK</span>
-          </td>
-          <td th:text="${a.stockMinimo}"></td>
-          <td th:text="${'$' + a.precioUnitario}"></td>
-          <td class="actions">
-            <a th:href="@{'/articulos/' + ${a.id} + '/editar'}" class="btn btn-ghost">Editar</a>
-            <a th:href="@{'/articulos/' + ${a.id} + '/eliminar'}" class="btn btn-danger">Eliminar</a>
-          </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(articulos)}">
-          <td colspan="7" style="text-align:center;color:var(--muted);padding:30px">
-            Aún no hay artículos. Crea el primero 🚀
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Stock</th><th>Mín.</th><th>Precio</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="a : ${articulos}">
+            <td th:text="${a.codigo}" style="font-family: 'Outfit', sans-serif; font-weight: 600;"></td>
+            <td th:text="${a.nombre}"></td>
+            <td th:text="${a.categoria}"></td>
+            <td>
+              <span th:text="${a.stockActual}"></span>
+              <span class="badge badge-low" th:if="${a.stockActual < a.stockMinimo}"><i class="ph ph-warning"></i> Bajo</span>
+              <span class="badge badge-ok"  th:if="${a.stockActual >= a.stockMinimo}"><i class="ph ph-check"></i> OK</span>
+            </td>
+            <td th:text="${a.stockMinimo}"></td>
+            <td th:text="${'$' + a.precioUnitario}" style="color: var(--success); font-weight: 600;"></td>
+            <td class="actions">
+              <a th:href="@{'/articulos/' + ${a.id} + '/editar'}" class="btn btn-ghost" title="Editar"><i class="ph-bold ph-pencil-simple"></i></a>
+              <a th:href="@{'/articulos/' + ${a.id} + '/eliminar'}" class="btn btn-danger" title="Eliminar"><i class="ph-bold ph-trash"></i></a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(articulos)}">
+            <td colspan="7" style="text-align:center;color:var(--text-muted);padding:40px">
+              <i class="ph-fill ph-rocket-launch" style="font-size:32px;display:block;margin-bottom:12px;color:var(--primary)"></i>
+              Aún no hay artículos. Crea el primero
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 </th:block>

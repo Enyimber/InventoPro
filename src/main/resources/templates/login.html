@@ -3,31 +3,42 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Iniciar sesión · InventoPro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
   <div class="login-wrap">
     <div class="login-card">
       <div class="brand" style="margin-bottom:16px">
-        <div class="logo">IP</div> InventoPro
+        <div class="logo"><i class="ph-bold ph-cube"></i></div> InventoPro
       </div>
       <h1>Bienvenido 👋</h1>
       <p class="sub">Sistema gestor de inventario · InnovaCode S.A.S.</p>
-      <div th:if="${param.error}" class="alert alert-error">Credenciales inválidas</div>
-      <div th:if="${param.logout}" class="alert alert-info">Sesión cerrada correctamente</div>
+      
+      <div th:if="${param.error}" class="alert alert-error">
+        <i class="ph-fill ph-warning-circle" style="font-size:20px;"></i> Credenciales inválidas
+      </div>
+      <div th:if="${param.logout}" class="alert alert-info">
+        <i class="ph-fill ph-check-circle" style="font-size:20px;"></i> Sesión cerrada correctamente
+      </div>
+      
       <form th:action="@{/login}" method="post">
         <div class="field">
-          <label>Usuario</label>
+          <label><i class="ph ph-user"></i> Usuario</label>
           <input type="text" name="username" required autofocus placeholder="admin"/>
         </div>
         <div class="field">
-          <label>Contraseña</label>
+          <label><i class="ph ph-lock-key"></i> Contraseña</label>
           <input type="password" name="password" required placeholder="••••••••"/>
         </div>
-        <button class="btn btn-primary" style="width:100%">Entrar</button>
+        <button class="btn btn-primary" style="width:100%">
+          Entrar <i class="ph-bold ph-arrow-right"></i>
+        </button>
       </form>
-      <p style="margin-top:20px;color:var(--muted);font-size:12px;text-align:center">
+      <p style="margin-top:24px;color:var(--text-muted);font-size:13px;text-align:center;background:rgba(0,0,0,0.2);padding:12px;border-radius:var(--radius-sm)">
         Por defecto: <strong>admin / Admin123*</strong>
       </p>
     </div>

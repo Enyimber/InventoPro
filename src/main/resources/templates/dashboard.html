@@ -4,31 +4,46 @@
 <th:block th:replace="~{layout :: layout('Dashboard', ~{::section})}">
 <section>
   <div class="cards">
-    <div class="card"><h3>Total Artículos</h3><div class="value" th:text="${totalArticulos}">0</div></div>
-    <div class="card"><h3>Alertas Stock</h3><div class="value" th:text="${totalAlertas}">0</div></div>
-    <div class="card"><h3>Movimientos hoy</h3><div class="value" th:text="${movimientosHoy}">0</div></div>
-    <div class="card"><h3>Estado</h3><div class="value" style="font-size:22px">🟢 Online</div></div>
+    <div class="card">
+      <h3><i class="ph ph-package"></i> Total Artículos</h3>
+      <div class="value" th:text="${totalArticulos}">0</div>
+    </div>
+    <div class="card">
+      <h3><i class="ph ph-warning-circle"></i> Alertas Stock</h3>
+      <div class="value" th:text="${totalAlertas}">0</div>
+    </div>
+    <div class="card">
+      <h3><i class="ph ph-trend-up"></i> Movimientos hoy</h3>
+      <div class="value" th:text="${movimientosHoy}">0</div>
+    </div>
+    <div class="card">
+      <h3><i class="ph ph-activity"></i> Estado</h3>
+      <div class="value" style="font-size:28px; color:var(--success); -webkit-text-fill-color: var(--success);">Online</div>
+    </div>
   </div>
 
   <div class="panel">
-    <h2>⚠️ Artículos bajo stock mínimo</h2>
-    <table>
-      <thead><tr><th>Código</th><th>Nombre</th><th>Stock actual</th><th>Stock mínimo</th><th>Estado</th></tr></thead>
-      <tbody>
-        <tr th:each="a : ${articulosBajos}">
-          <td th:text="${a.codigo}"></td>
-          <td th:text="${a.nombre}"></td>
-          <td th:text="${a.stockActual}"></td>
-          <td th:text="${a.stockMinimo}"></td>
-          <td><span class="badge badge-low">Bajo stock</span></td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(articulosBajos)}">
-          <td colspan="5" style="text-align:center;color:var(--muted);padding:24px">
-            ✅ Todo el stock está dentro de lo esperado
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <h2><i class="ph-fill ph-warning"></i> Artículos bajo stock mínimo</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Código</th><th>Nombre</th><th>Stock actual</th><th>Stock mínimo</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr th:each="a : ${articulosBajos}">
+            <td th:text="${a.codigo}" style="font-family: 'Outfit', sans-serif; font-weight: 600;"></td>
+            <td th:text="${a.nombre}"></td>
+            <td th:text="${a.stockActual}" style="color: var(--warning); font-weight: 700;"></td>
+            <td th:text="${a.stockMinimo}"></td>
+            <td><span class="badge badge-low"><i class="ph ph-warning"></i> Bajo stock</span></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(articulosBajos)}">
+            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:40px">
+              <i class="ph ph-check-circle" style="color:var(--success);font-size:32px;display:block;margin-bottom:12px"></i>
+              Todo el stock está dentro de lo esperado
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 </th:block>

@@ -5,23 +5,46 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title th:text="|InventoPro · ${title}|">InventoPro</title>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <!-- Styles -->
   <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="brand"><div class="logo">IP</div> InventoPro</div>
+      <div class="brand">
+        <div class="logo"><i class="ph-bold ph-cube"></i></div>
+        InventoPro
+      </div>
       <nav class="nav">
-        <a th:href="@{/dashboard}">📊 Dashboard</a>
-        <a th:href="@{/articulos}">📦 Artículos</a>
-        <a th:href="@{/movimientos}">🔁 Movimientos</a>
-        <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">👥 Usuarios</a>
-        <a th:href="@{/proveedores}" sec:authorize="hasRole('ADMIN')">🏷️ Proveedores</a>
-        <a th:href="@{/swagger-ui.html}" target="_blank">🔌 API Docs</a>
-        <form th:action="@{/logout}" method="post" style="margin-top:30px">
-          <button class="btn btn-ghost" style="width:100%">Cerrar sesión</button>
+        <!-- Navegación -->
+        <a th:href="@{/dashboard}">
+          <i class="ph ph-squares-four"></i> Dashboard
+        </a>
+        <a th:href="@{/articulos}">
+          <i class="ph ph-package"></i> Artículos
+        </a>
+        <a th:href="@{/movimientos}">
+          <i class="ph ph-arrows-left-right"></i> Movimientos
+        </a>
+        <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">
+          <i class="ph ph-users"></i> Usuarios
+        </a>
+        <a th:href="@{/proveedores}" sec:authorize="hasRole('ADMIN')">
+          <i class="ph ph-buildings"></i> Proveedores
+        </a>
+        <a th:href="@{/swagger-ui.html}" target="_blank">
+          <i class="ph ph-plug"></i> API Docs
+        </a>
+        <form th:action="@{/logout}" method="post" style="margin-top:auto">
+          <button class="btn btn-ghost" style="width:100%; justify-content: flex-start; color: var(--text-muted); border: none; padding: 14px 18px;">
+            <i class="ph ph-sign-out" style="font-size: 20px;"></i> Cerrar sesión
+          </button>
         </form>
       </nav>
     </aside>
@@ -29,9 +52,10 @@
       <header class="topbar">
         <h1 th:text="${title}">Página</h1>
         <div class="user-chip">
-          👤 <span sec:authentication="name">usuario</span>
+          <div class="avatar"><i class="ph-bold ph-user"></i></div>
+          <span sec:authentication="name">usuario</span>
           <span class="badge badge-ok"
-                style="margin-left:8px"
+                style="margin-left:4px"
                 sec:authentication="principal.authorities"></span>
         </div>
       </header>
