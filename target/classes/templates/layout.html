@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title th:text="|InventoPro · ${title}|">InventoPro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">IP</div> InventoPro</div>
+
+      <div class="nav-section">General</div>
+      <nav class="nav">
+        <a th:href="@{/dashboard}">📊 Dashboard</a>
+      </nav>
+
+      <div class="nav-section" sec:authorize="hasRole('CONSULTOR')">Inventario</div>
+      <nav class="nav" sec:authorize="hasRole('CONSULTOR')">
+        <a th:href="@{/articulos}">📦 Artículos</a>
+        <a th:href="@{/movimientos}">🔁 Movimientos</a>
+      </nav>
+
+      <div class="nav-section" sec:authorize="hasRole('PROVEEDOR')">Mi portal</div>
+      <nav class="nav" sec:authorize="hasRole('PROVEEDOR')">
+        <a th:href="@{/proveedor/entregas}">🚚 Mis entregas</a>
+      </nav>
+
+      <div class="nav-section" sec:authorize="hasRole('ADMIN')">Administración</div>
+      <nav class="nav">
+        <a th:href="@{/usuarios}"     sec:authorize="hasRole('ADMIN')">👥 Usuarios</a>
+        <a th:href="@{/proveedores}"  sec:authorize="hasRole('ADMIN')">🏷️ Proveedores</a>
+        <a th:href="@{/swagger-ui.html}" target="_blank" sec:authorize="hasRole('ADMIN')">🔌 API Docs</a>
+      </nav>
+
+      <form th:action="@{/logout}" method="post" style="margin-top:30px">
+        <button class="btn btn-ghost" style="width:100%">Cerrar sesión</button>
+      </form>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <h1 th:text="${title}">Página</h1>
+        <div class="user-chip">
+          👤 <span sec:authentication="name">usuario</span>
+          <span class="badge badge-ok" style="margin-left:8px"
+                th:text="${rolPrincipal}">ROL</span>
+        </div>
+      </header>
+      <section th:replace="${content}">contenido</section>
+    </main>
+  </div>
+</body>
+</html>

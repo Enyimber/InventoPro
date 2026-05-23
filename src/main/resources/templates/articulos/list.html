@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Artículos', ~{::section})}">
+<section>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2>📦 Catálogo de artículos</h2>
+      <a th:href="@{/articulos/nuevo}" class="btn btn-primary">+ Nuevo artículo</a>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Stock</th><th>Mín.</th><th>Precio</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="a : ${articulos}">
+          <td th:text="${a.codigo}"></td>
+          <td th:text="${a.nombre}"></td>
+          <td th:text="${a.categoria}"></td>
+          <td>
+            <span th:text="${a.stockActual}"></span>
+            <span class="badge badge-low" th:if="${a.stockActual < a.stockMinimo}">Bajo</span>
+            <span class="badge badge-ok"  th:if="${a.stockActual >= a.stockMinimo}">OK</span>
+          </td>
+          <td th:text="${a.stockMinimo}"></td>
+          <td th:text="${'$' + a.precioUnitario}"></td>
+          <td class="actions">
+            <a th:href="@{'/articulos/' + ${a.id} + '/editar'}" class="btn btn-ghost">Editar</a>
+            <a th:href="@{'/articulos/' + ${a.id} + '/eliminar'}" class="btn btn-danger">Eliminar</a>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(articulos)}">
+          <td colspan="7" style="text-align:center;color:var(--muted);padding:30px">
+            Aún no hay artículos. Crea el primero 🚀
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</th:block>
+</body></html>

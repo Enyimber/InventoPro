@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Usuario', ~{::section})}">
+<section>
+  <div class="panel" style="max-width:760px">
+    <h2 th:text="${modo == 'crear'} ? '➕ Nuevo usuario' : '✏️ Editar usuario'"></h2>
+    <form th:action="${modo == 'crear'} ? @{/usuarios} : @{'/usuarios/' + ${usuario.id}}"
+          th:object="${usuario}" method="post">
+      <div class="field"><label>Nombre de usuario</label><input type="text" th:field="*{username}" required/></div>
+      <div class="field"><label>Nombre completo</label><input type="text" th:field="*{nombreCompleto}" required/></div>
+      <div class="field"><label>Email</label><input type="email" th:field="*{email}" required/></div>
+      <div class="field">
+        <label th:text="${modo == 'crear'} ? 'Contraseña' : 'Contraseña (dejar vacío para no cambiar)'"></label>
+        <input type="password" name="passwordPlano" th:required="${modo == 'crear'}" minlength="6"/>
+      </div>
+
+      <div class="field">
+        <label>Roles (7 oficiales del sistema)</label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+          <label th:each="r : ${rolesDisponibles}" class="role-chip">
+            <input type="checkbox" name="roles" th:value="${r}"
+                   th:checked="${usuario.roles != null and usuario.roles.contains(r)}"/>
+            <span th:text="${r}"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Proveedor asociado (sólo si tiene rol PROVEEDOR)</label>
+        <select th:field="*{proveedorId}">
+          <option value="">-- ninguno --</option>
+          <option th:each="p : ${proveedores}" th:value="${p.id}"
+                  th:text="|${p.nit} - ${p.razonSocial}|"></option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Área (sólo si tiene rol SUPERVISOR)</label>
+        <input type="text" th:field="*{area}" placeholder="Ej: Bodega Norte"/>
+      </div>
+
+      <div class="field">
+        <label style="display:flex;gap:8px;align-items:center">
+          <input type="checkbox" th:field="*{activo}"/> Usuario activo
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" type="submit"
+                th:text="${modo == 'crear'} ? 'Crear usuario' : 'Guardar cambios'"></button>
+        <a th:href="@{/usuarios}" class="btn btn-ghost">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>
+</th:block>
+</body></html>

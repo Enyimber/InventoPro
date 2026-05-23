@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Dashboard · Supervisor de Área', ~{::section})}">
+<section>
+  <!-- Mensajes flash de operaciones -->
+  <div th:if="${ok}" class="alert alert-info" style="margin-bottom:16px" th:text="${ok}"></div>
+  <div th:if="${error}" class="alert alert-error" style="margin-bottom:16px" th:text="${error}"></div>
+
+  <div class="cards">
+    <div class="card"><h3>Total Artículos</h3><div class="value" th:text="${totalArticulos}">0</div></div>
+    <div class="card"><h3>Alertas Stock</h3><div class="value" th:text="${totalAlertas}">0</div></div>
+    <div class="card"><h3>Movimientos hoy</h3><div class="value" th:text="${movimientosHoy}">0</div></div>
+  </div>
+
+  <!-- Alerta de Entregas Pendientes de Proveedores -->
+  <div class="panel" th:if="${not #lists.isEmpty(pendientes)}" style="border-left: 5px solid var(--accent); background-color: rgba(99, 102, 241, 0.05);">
+    <h2 style="color: var(--accent); display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+      🔔 Entregas pendientes de aprobación
+    </h2>
+    <p style="color: var(--muted); margin-bottom: 16px; font-size: 13px;">
+      Los proveedores han registrado las siguientes entregas. Por favor, verifique físicamente los productos antes de aceptar o rechazar el ingreso al inventario.
+    </p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Proveedor</th>
+            <th>Artículo</th>
+            <th>Cantidad</th>
+            <th>Precio U.</th>
+            <th>Notas / Motivo</th>
+            <th style="text-align:right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="m : ${pendientes}">
+            <td th:text="${#temporals.format(m.fecha,'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${proveedoresMap != null ? proveedoresMap.get(m.proveedorId) : m.proveedorId}"></td>
+            <td th:text="${articulosMap != null ? articulosMap.get(m.articuloId) : m.articuloId}"></td>
+            <td th:text="${m.cantidad}"></td>
+            <td th:text="${'$' + m.precioUnitario}"></td>
+            <td th:text="${m.motivo}"></td>
+            <td style="text-align:right">
+              <div style="display: inline-flex; gap: 8px;">
+                <form th:action="@{/almacen/entregas/aceptar/{id}(id=${m.id})}" method="post" style="display:inline">
+                  <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">Aceptar</button>
+                </form>
+                <form th:action="@{/almacen/entregas/rechazar/{id}(id=${m.id})}" method="post" style="display:inline">
+                  <button type="submit" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">Rechazar</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel"><h2>✅ Solicitudes pendientes de aprobación</h2>
+    <p style="color:var(--muted)">No hay solicitudes pendientes en este momento.</p></div>
+  <div th:replace="~{dashboards/_charts :: movChart}"></div>
+  <div th:replace="~{dashboards/_charts :: alertasTabla}"></div>
+</section>
+</th:block>
+</body></html>

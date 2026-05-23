@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Nueva entrega', ~{::section})}">
+<section>
+  <div class="panel" style="max-width:640px">
+    <h2>🚚 Registrar nueva entrega</h2>
+    <form th:action="@{/proveedor/entregas}" th:object="${movimiento}" method="post">
+      <input type="hidden" th:field="*{tipo}"/>
+      <input type="hidden" th:field="*{proveedorId}"/>
+      <div class="field">
+        <label>Artículo</label>
+        <select th:field="*{articuloId}" required>
+          <option value="">-- seleccione --</option>
+          <option th:each="a : ${articulos}" th:value="${a.id}"
+                  th:text="|${a.codigo} - ${a.nombre}|"></option>
+        </select>
+      </div>
+      <div class="field"><label>Cantidad</label>
+        <input type="number" th:field="*{cantidad}" min="1" required/></div>
+      <div class="field"><label>Precio Unitario</label>
+        <input type="number" step="0.01" th:field="*{precioUnitario}"/></div>
+      <div class="field"><label>Motivo / Nota</label>
+        <input type="text" th:field="*{motivo}" placeholder="Ej: Orden #1234"/></div>
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Registrar entrega</button>
+        <a class="btn btn-ghost" th:href="@{/proveedor/entregas}">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>
+</th:block>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:replace="~{layout :: layout('Dashboard · Proveedor', ~{::section})}">
+<section>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Mis entregas</h3>
+      <div class="value" th:text="${totalEntregas}">0</div>
+    </div>
+
+    <div class="card">
+      <h3>Unidades entregadas</h3>
+      <div class="value" th:text="${totalUnidades}">0</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>🚚 Gestión de entregas</h2>
+    <p style="color:var(--muted)">
+      Registre y consulte únicamente sus propias entregas.
+    </p>
+
+    <div class="actions" style="margin-top:12px">
+      <a class="btn btn-primary"
+         th:href="@{/proveedor/entregas/nueva}">
+         ➕ Nueva entrega
+      </a>
+
+      <a class="btn btn-ghost"
+         th:href="@{/proveedor/entregas}">
+         📋 Ver mis entregas
+      </a>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Últimas entregas</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Artículo</th>
+          <th>Cantidad</th>
+          <th>Motivo</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr th:each="m,it : ${entregas}"
+            th:if="${it.index < 5}">
+
+          <td th:text="${#temporals.format(m.fecha, 'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${articulosMap != null ? articulosMap.get(m.articuloId) : m.articuloId}"></td>
+          <td th:text="${m.cantidad}"></td>
+          <td th:text="${m.motivo}"></td>
+          <td>
+            <span class="badge badge-low" th:if="${m.estado == 'PENDIENTE'}">PENDIENTE</span>
+            <span class="badge badge-ok" th:if="${m.estado == 'ACEPTADO'}">ACEPTADO</span>
+            <span class="badge badge-out" th:if="${m.estado == 'RECHAZADO'}">RECHAZADO</span>
+            <span class="badge badge-ok" th:if="${m.estado == null || m.estado == 'PROCESADO'}">PROCESADO</span>
+          </td>
+
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(entregas)}">
+          <td colspan="5"
+              style="text-align:center;color:var(--muted);padding:24px">
+            Aún no ha registrado entregas
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</section>
+</th:block>
+</body>
+</html>
