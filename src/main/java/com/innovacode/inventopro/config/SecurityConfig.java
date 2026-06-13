@@ -68,13 +68,14 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**", "/js/**",
+                .requestMatchers("/login", "/error", "/css/**", "/js/**",
                                  "/api/auth/**",
                                  "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/usuarios/**").hasRole("ADMIN")
                 .requestMatchers("/proveedores/**").hasRole("ADMIN")
                 .requestMatchers("/proveedor/**").hasAnyRole("ADMIN", "PROVEEDOR")
                 .requestMatchers("/almacen/**").hasAnyRole("ADMIN","ALMACENISTA","SUPERVISOR")
+                .requestMatchers("/reportes/**").hasAnyRole("ADMIN","GERENTE","AUDITOR")
                 .requestMatchers("/movimientos/**").hasRole("CONSULTOR")
                 .anyRequest().authenticated()
             )

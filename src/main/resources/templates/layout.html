@@ -26,6 +26,11 @@
         <a th:href="@{/movimientos}">🔁 Movimientos</a>
       </nav>
 
+      <div class="nav-section" sec:authorize="hasAnyRole('ADMIN','GERENTE','AUDITOR')">Reportes</div>
+      <nav class="nav" sec:authorize="hasAnyRole('ADMIN','GERENTE','AUDITOR')">
+        <a th:href="@{/reportes}">📑 Exportar PDF / Excel</a>
+      </nav>
+
       <div class="nav-section" sec:authorize="hasRole('PROVEEDOR')">Mi portal</div>
       <nav class="nav" sec:authorize="hasRole('PROVEEDOR')">
         <a th:href="@{/proveedor/entregas}">🚚 Mis entregas</a>

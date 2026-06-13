@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="|InventoPro · Error ${status}|">InventoPro · Error</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+  <style>
+    .err-wrap { min-height: 100vh; display:grid; place-items:center; background:#0f172a; color:#e2e8f0; font-family: Inter, system-ui, sans-serif; padding:24px;}
+    .err-card { max-width:560px; width:100%; background:#1e293b; border:1px solid #334155; border-radius:16px; padding:32px; box-shadow:0 20px 60px rgba(0,0,0,.4);}
+    .err-status { font-size:64px; font-weight:800; color:#f87171; line-height:1; margin:0;}
+    .err-title  { font-size:20px; font-weight:700; margin:8px 0 16px;}
+    .err-msg    { color:#94a3b8; font-size:14px; word-break:break-word;}
+    .err-path   { font-family: ui-monospace, monospace; color:#fbbf24; font-size:13px; margin-top:8px;}
+    .err-actions{ margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;}
+    .btn { padding:10px 18px; border-radius:8px; font-weight:600; text-decoration:none; display:inline-block; transition:all .15s;}
+    .btn-primary { background:#3b82f6; color:#fff;} .btn-primary:hover{background:#2563eb;}
+    .btn-ghost   { background:transparent; color:#e2e8f0; border:1px solid #475569;} .btn-ghost:hover{background:#334155;}
+  </style>
+</head>
+<body>
+  <div class="err-wrap">
+    <div class="err-card">
+      <p class="err-status" th:text="${status} ?: 500">500</p>
+      <h1 class="err-title" th:text="${error} ?: 'Error inesperado'">Error inesperado</h1>
+      <p class="err-msg" th:if="${message}" th:text="${message}">Detalle</p>
+      <p class="err-path" th:if="${path}" th:text="|Ruta: ${path}|">Ruta</p>
+      <p class="err-msg" th:if="${exception}" th:text="|Excepción: ${exception}|" style="margin-top:4px;font-size:12px;"></p>
+      <div class="err-actions">
+        <a class="btn btn-primary" th:href="@{/dashboard}">⬅ Volver al dashboard</a>
+        <a class="btn btn-ghost"   th:href="@{/login}">Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
